@@ -24,9 +24,11 @@ data_transforms = transforms.Compose([
 ])
 
 ### Set up the data directory
+
 data_dir = "/content/drive/MyDrive/archive (1)/chest_xray/chest_xray"
 
 ### Load the datasets
+
 train_dataset = datasets.ImageFolder("/content/drive/MyDrive/archive (1)/chest_xray/train", transform=data_transforms)
 test_dataset = datasets.ImageFolder("/content/drive/MyDrive/archive (1)/chest_xray/train", transform=data_transforms)
 
@@ -35,6 +37,7 @@ train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=64, shuffle
 test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=64, shuffle=True)
 
 ### Create the model and optimizer
+
 model = torch.nn.Sequential(
     torch.nn.Flatten(),
     torch.nn.Linear(3 * 56 * 56, 512),
@@ -45,6 +48,7 @@ model = torch.nn.Sequential(
 optimizer = torch.optim.Adam(model.parameters(), lr=0.05)
 
 ### Train the model
+
 for epoch in range(3):
     running_loss = 0.0
 
@@ -58,7 +62,9 @@ for epoch in range(3):
         running_loss += loss.item()
  
     print(f"Epoch [{epoch + 1}]: Train Loss: {running_loss / len(train_loader):.4f}")  
+    
 ### Evaluate the model on the test set
+
 correct = 0
 with torch.no_grad():
     for images, labels in test_loader:
@@ -104,16 +110,22 @@ visualize_class_distribution(test_dataset, "Test")
 mean, std = calculate_dataset_stats(test_dataset)
 print(f"Test dataset mean: {mean:.4f}, standard deviation: {std:.4f}")
 
+![1](https://github.com/rakshureddy1308/PneumoniaRecognization/assets/119916578/a0c8249e-6050-4de1-b7b2-4577fad3dde5)
+
+![2](https://github.com/rakshureddy1308/PneumoniaRecognization/assets/119916578/25742efd-f877-4e5e-b5aa-903a8889dc47)
+
 ### Evaluation metrics
 
 from sklearn.metrics import precision_score, recall_score, f1_score
 
 ### Initialize empty lists to store true labels and predictions
+
 true_labels = []
 predicted_labels = []
 correct = 0
 
 ### Accumulate true labels and predictions for all mini-batches in the test set
+
 with torch.no_grad():
     for images, labels in test_loader:
         outputs = model(images)
@@ -125,6 +137,7 @@ with torch.no_grad():
 print(f"Accuracy on the test set: {correct / len(test_dataset):.2%}")
 
 ### Calculate precision, recall, and F1 score using the accumulated true labels and predictions
+
 precision = precision_score(true_labels, predicted_labels)
 recall = recall_score(true_labels, predicted_labels)
 f1 = f1_score(true_labels, predicted_labels)
@@ -132,11 +145,16 @@ f1 = f1_score(true_labels, predicted_labels)
 print(f"Precision: {precision:.2f}, Recall: {recall:.2f}, F1 score: {f1:.2f}")
 
 ### Add imports at the top
+
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
 ### Calculate the confusion matrix using the accumulated true labels and predictions
+
 cm = confusion_matrix(true_labels, predicted_labels)
 
 ### Visualize the confusion matrix
+
 disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Normal", "Pneumonia"])
 disp.plot()
+
+![3](https://github.com/rakshureddy1308/PneumoniaRecognization/assets/119916578/c4234877-c2d2-414e-be61-d0d8b5239eff)
