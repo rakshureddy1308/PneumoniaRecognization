@@ -160,5 +160,5 @@ disp.plot()
 ![3](https://github.com/rakshureddy1308/PneumoniaRecognization/assets/119916578/c4234877-c2d2-414e-be61-d0d8b5239eff)
 
 
-# Accuracy on the test set: 98.95%
+# Accuracy on the test set: 99%
 # Precision: 0.99, Recall: 1.00, F1 score: 0.99
